@@ -1,39 +1,7 @@
 <template>
   <div class="container-home-page">
-    <div class="header">
-      <div class="profile">
-        <a>
-            <img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              alt=""
-            />
-        </a>
-        <div style="margin-left: 10px">
-          <h3 style="font-size: 20px">amad1</h3>
-          <h3>amad1@mail.com</h3>
-        </div>
-      </div>
-      <h1>SepotipaiGram</h1>
-      <router-link to="/">
-        <span class="las la-plus-circle"></span>
-        <span>Add Post</span>
-      </router-link>
-      <router-link to="/favorite">
-        <span class="las la-music"></span>
-        <span>Enjoy Music</span>
-      </router-link>
-      <div class="icon">
-        <a href="" @click.prevent="logoutHandler()"><span>Logout</span></a>
-        <img src="https://img.icons8.com/material/35/000000/exit.png" />
-      </div>
-
-      <div class="icon">
-        <router-link to="/login" href=""><span>Signin</span></router-link>
-        <img
-          src="https://img.icons8.com/ios-filled/35/000000/login-rounded.png"
-        />
-      </div>
-    </div>
+    <!-- header comp  -->
+    <header-comp></header-comp>
 
     <div class="dashboard">
       <!-- card post  -->
@@ -55,11 +23,12 @@
 
 <script>
 import CardPostComp from '../components/CardPostComp.vue';
+import HeaderComp from '../components/HeaderComp.vue';
 // @ is an alias to /src
 
 export default {
   name: "Home",
-  components: { CardPostComp },
+  components: { CardPostComp, HeaderComp },
 };
 </script>
 
