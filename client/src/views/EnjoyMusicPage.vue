@@ -1,6 +1,6 @@
 <template>
   <div class="container-home-page">
-    <!-- header comp  -->
+    <!-- header comp -->
     <header-comp></header-comp>
 
     <div class="dashboard">
@@ -9,9 +9,8 @@
         <div class="main-post">
           <div class="album">
             <iframe
-              v-if="dataAddPost"
               title="deezer-widget"
-              :src="dataAddPost.embed"
+              src="https://widget.deezer.com/widget/dark/track/1425844092"
               width="410"
               height="230"
               frameborder="0"
@@ -19,81 +18,17 @@
               allow="encrypted-media; clipboard-write"
             ></iframe>
           </div>
-          <div v-if="!dataAddPost" class="title">Title</div>
-          <div v-if="!dataAddPost" class="artist">Artist</div>
-          <div v-if="dataAddPost" class="title">{{ dataAddPost.title }}</div>
-          <div v-if="dataAddPost" class="artist">{{ dataAddPost.artist }}</div>
-          <label v-if="dataAddPost" for="exampleFormControlTextarea1">Caption</label>
+          <div class="title">STAY</div>
+          <div class="artist">The Kid Laroy</div>
+          <label for="exampleFormControlTextarea1">Caption</label>
           <div class="embed">
-            <textarea
-              v-if="dataAddPost"
-              class="form-control"
-              id="exampleFormControlTextarea1"
-              rows="2"
-              placeholder="caption here.."
-            ></textarea>
+            <div id='rg_embed_link_378195' class='rg_embed_link' data-song-id='378195'>Read <a href='https://genius.com/Sia-chandelier-lyrics'>“Chandelier” by Sia</a> on Genius</div>
           </div>
         </div>
 
-        <div class="post-add">
-          <button
-            v-if="dataAddPost"
-            @click="addPostToDb(dataAddPost)"
-            style="margin-bottom: 3px"
-            type="submit"
-            class="btn btn-primary"
-          >
-            Post
-          </button>
-        </div>
+        
       </div>
-      <div class="card-post-2">
-        <div class="">
-          <div class="form-outline">
-            <label class="form-label" for="form1"
-              >Please Search Music First..</label
-            >
-          </div>
-          <div class="search">
-            <input
-              v-model="search"
-              type="search"
-              id="form1"
-              class="form-control"
-              placeholder="search.. "
-            />
-            <button
-              @click="searchHandler()"
-              type="button"
-              class="btn btn-primary"
-            >
-              <i class="fas fa-search"></i>
-            </button>
-          </div>
-          <table class="table">
-            <thead>
-              <tr>
-                <th scope="col">Title</th>
-                <th scope="col">Artist</th>
-                <th scope="col"></th>
-              </tr>
-            </thead>
-            <tbody>
-              <!-- searc card  -->
-              <search-card></search-card>
-            </tbody>
-          </table>
-          <button
-            v-if="dataAddPost"
-            @click="clear()"
-            style="margin-bottom: 3px"
-            type="submit"
-            class="btn btn-secondary"
-          >
-            Clear
-          </button>
-        </div>
-      </div>
+      
     </div>
 
     <div class="footer">
@@ -107,35 +42,11 @@
 </template>
 
 <script>
-import SearchCard from "../components/SearchCard.vue";
-import { mapActions, mapMutations, mapState } from "vuex";
-import HeaderComp from '../components/HeaderComp.vue';
+import HeaderComp from "../components/HeaderComp.vue"
+
 export default {
-  components: { SearchCard, HeaderComp },
-  name: "AddPostPage",
-  data() {
-    return {
-      search: "",
-    };
-  },
-  computed: {
-    ...mapState(["dataAddPost"]),
-  },
-  methods: {
-    ...mapMutations(["CLEAR_DATA_MUSIC"]),
-    ...mapActions(["getMusic"]),
-    async searchHandler() {
-      console.log(this.search);
-      await this.getMusic(this.search);
-    },
-    async addPostToDb(data) {
-      console.log(data);
-    },
-    clear() {
-      this.CLEAR_DATA_MUSIC()
-      console.log('anjay');
-    }
-  },
+  components: { HeaderComp },
+  name: "EnjoyMusicPage",
 };
 </script>
 
