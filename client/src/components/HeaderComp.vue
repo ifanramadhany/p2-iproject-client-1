@@ -1,13 +1,17 @@
 <template>
   <div class="header">
     <div class="profile">
-      <a>
+      <a @click.prevent="changeProfile()">
         <img
           src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
           alt=""
         />
       </a>
-      <div style="margin-left: 10px">
+      <div v-if="profile" style="margin-left: 10px">
+        <input class="custom-file-upload" type="file" />
+        <i @click="CloseChangeProfile()" class="fas fa-times btn-x"></i>
+      </div>
+      <div v-if="!profile" style="margin-left: 10px">
         <h3 style="font-size: 20px">amad1</h3>
         <h3>amad1@mail.com</h3>
       </div>
@@ -39,10 +43,21 @@
 import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: "HeaderComp",
+  data() {
+    return {
+      profile: false,
+    };
+  },
   methods: {
     toHomePage() {
       this.$router.push("/");
     },
+    changeProfile() {
+      this.profile = true;
+    },
+    CloseChangeProfile() {
+      this.profile = false
+    }
   },
   computed: {
     ...mapState(["isLoggedIn"]),
@@ -53,5 +68,13 @@ export default {
 <style>
 .header h1 {
   cursor: pointer;
+}
+
+.btn-x {
+  cursor: pointer;
+}
+
+.custom-file-upload {
+  width: 100px;
 }
 </style>

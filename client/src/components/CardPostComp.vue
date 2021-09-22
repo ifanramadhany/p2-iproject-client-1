@@ -28,7 +28,7 @@
             />
             <span>125</span>
           </a>
-          <a href="">
+          <a @click.prevent="toCommentPage()" href="">
             <img
               src="https://img.icons8.com/material-outlined/40/000000/comments--v1.png"
             />
@@ -39,7 +39,12 @@
 
 <script>
 export default {
-  name: 'CardPostComp'
+  name: 'CardPostComp',
+  methods: {
+    toCommentPage() {
+      this.$router.push("/comment")
+    }
+  }
 }
 </script>
 
