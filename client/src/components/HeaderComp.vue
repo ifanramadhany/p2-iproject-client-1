@@ -1,9 +1,9 @@
 <template>
   <div class="header">
-    <div class="profile">
+    <div v-if="isLoggedIn" class="profile">
       <a @click.prevent="changeProfile()">
         <img
-          src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+          :src="userData.profileUrl"
           alt=""
         />
       </a>
@@ -12,12 +12,12 @@
         <i @click="CloseChangeProfile()" class="fas fa-times btn-x"></i>
       </div>
       <div v-if="!profile" style="margin-left: 10px">
-        <h3 style="font-size: 20px">amad1</h3>
-        <h3>amad1@mail.com</h3>
+        <h3 style="font-size: 20px">{{userData.username}}</h3>
+        <h3>{{userData.email}}</h3>
       </div>
     </div>
     <h1 @click="toHomePage()">SepotipaiGram</h1>
-    <router-link to="/add-post">
+    <router-link v-if="isLoggedIn" to="/add-post">
       <span class="las la-plus-circle"></span>
       <span>Add Post</span>
     </router-link>
@@ -49,6 +49,14 @@ export default {
     };
   },
   methods: {
+    ...mapActions(["logout"]),
+    async logoutHandler() {
+      await this.logout();
+      if (!this.isLoggedIn) {
+        this.$router.push("/login");
+        swal("logout successfully", "", "success");
+      }
+    },
     toHomePage() {
       this.$router.push("/");
     },
@@ -57,10 +65,11 @@ export default {
     },
     CloseChangeProfile() {
       this.profile = false
-    }
+    },
+
   },
   computed: {
-    ...mapState(["isLoggedIn"]),
+    ...mapState(["isLoggedIn", "userData"]),
   },
 };
 </script>

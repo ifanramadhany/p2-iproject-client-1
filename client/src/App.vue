@@ -4,32 +4,45 @@
   </div>
 </template>
 
+<script>
+export default {
+  name: "App",
+  created() {
+    this.$store.dispatch("fetchPostData");
+    if (localStorage.getItem("access_token")) {
+      this.$store.commit("LOGIN");
+      this.$store.dispatch("fetchUserData");
+      this.$store.dispatch("fetchPostData");
+    }
+  },
+};
+</script>
+
 <style>
-*{
+* {
   margin: 0;
   padding: 0;
   box-sizing: border-box;
-  font-family: 'Fredoka One', 'cursive';
+  font-family: "Fredoka One", "cursive";
   text-decoration: none;
 }
 
 @keyframes gradient {
-	0% {
-		background-position: 0% 50%;
-	}
-	50% {
-		background-position: 100% 50%;
-	}
-	100% {
-		background-position: 0% 50%;
-	}
+  0% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+  100% {
+    background-position: 0% 50%;
+  }
 }
 
-div a{
+div a {
   text-decoration: none;
   cursor: pointer;
 }
-
 
 #app {
   font-family: Avenir, Helvetica, Arial, sans-serif;

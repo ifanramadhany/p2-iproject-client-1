@@ -7,9 +7,9 @@
     <link rel="icon" href="<%= BASE_URL %>favicon.ico">
     <!-- chat feature  -->
     <link href="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/css/bootstrap.min.css" rel="stylesheet" id="bootstrap-css">
-<script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
-<script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-<link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet"
+    <script src="//maxcdn.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.min.js"></script>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.css" type="text/css" rel="stylesheet"
     <!-- Font Google  -->
     <link
       href="https://fonts.googleapis.com/css2?family=Nunito:wght@300;400;600;700;800&display=swap"
@@ -30,6 +30,12 @@
       src="https://kit.fontawesome.com/43d2163eae.js"
       crossorigin="anonymous"
     ></script>
+    <!-- Google Platform Library -->
+    <script src="https://apis.google.com/js/platform.js?onload=onLoad" async defer></script>
+    <meta
+      name="google-signin-client_id"
+      content="835876374944-femkmg6hmaihghhm9hha2finje5kenbs.apps.googleusercontent.com"
+    />
     <title>SepotipaiGram</title>
   </head>
   <body>
@@ -38,7 +44,14 @@
     </noscript>
     <div id="app"></div>
     <!-- built files will be auto injected -->
-    
+    <!-- google OAuth script  -->
+    <script>
+      function onLoad() {
+      gapi.load('auth2', function() {
+        gapi.auth2.init();
+      });
+    }
+    </script>
     <!-- sweet alert  -->
     <script src="https://unpkg.com/sweetalert/dist/sweetalert.min.js"></script>
 

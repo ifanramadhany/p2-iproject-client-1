@@ -2,7 +2,7 @@
   <div id="container-register-page">
     <div id="content-register-page">
       <div class="title-app">
-        <router-link to="/">
+        <router-link to="/" style="text-decoration: none">
         <h1>SepotipaiGram</h1>
         </router-link>
         
@@ -48,11 +48,7 @@
               Register
             </button>
             <!-- button google sign in  -->
-            <GoogleLogin
-                  :params="params"
-                  :renderParams="renderParams"
-                  :onSuccess="onSuccess"
-                ></GoogleLogin>
+            <GoogleLogin :params="params" :renderParams="renderParams" :onSuccess="onSuccess"></GoogleLogin>
           </div>
         </form>
       </div>
@@ -61,8 +57,54 @@
 </template>
 
 <script>
+import GoogleLogin from 'vue-google-login';
+import { mapActions, mapState } from "vuex";
 export default {
-  name: 'LoginPage'
+  name: 'LoginPage',
+  computed: {
+    ...mapState(["isLoggedIn"])
+  },
+  components: {
+    GoogleLogin
+  },
+  data() {
+    return {
+      email: "",
+      password: "",
+      params: {
+        client_id:
+          "835876374944-femkmg6hmaihghhm9hha2finje5kenbs.apps.googleusercontent.com",
+      },
+      renderParams: {
+        width: 250,
+        height: 40,
+        longtitle: true,
+      },
+    }
+  },
+  methods: {
+    ...mapActions(["login", "googleLogin"]),
+    async onSuccess(googleUser) {
+      await this.googleLogin(googleUser)
+      if(this.isLoggedIn && localStorage.getItem("access_token")) {
+        this.$router.push('/');
+      }
+    },
+    toRegisterPage() {
+      this.$router.push("/register")
+    },
+    async loginHandler() {
+      const payload = {
+        email: this.email,
+        password: this.password
+      }
+      // console.log(payload);
+      await this.login(payload)
+      if(this.isLoggedIn && localStorage.getItem("access_token")) {
+        this.$router.push("/")
+      }
+    },
+  }
 }
 </script>
 
