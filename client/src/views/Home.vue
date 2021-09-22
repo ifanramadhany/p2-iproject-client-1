@@ -111,7 +111,11 @@ span {
 }
 
 .dashboard {
-  background-color: rgb(165, 165, 165);
+  background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
+	background-size: 400% 400%;
+	animation: gradient 15s ease infinite;
+	/* height: 100vh; */
+  /* background-color: rgb(165, 165, 165); */
   grid-area: dashboard;
   display: flex;
   flex-wrap: wrap;
@@ -119,6 +123,7 @@ span {
   flex-direction: column;
   align-items: center;
 }
+
 
 .card-post {
   background-color: white;
