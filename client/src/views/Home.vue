@@ -5,10 +5,11 @@
 
     <div class="dashboard">
       <!-- card post  -->
-      <card-post-comp></card-post-comp>
-      <card-post-comp></card-post-comp>
-      <card-post-comp></card-post-comp>
-      <card-post-comp></card-post-comp>
+      <card-post-comp
+        v-for="post in dataPost"
+        :key="post.id"
+        :post="post"
+      ></card-post-comp>
     </div>
 
     <div class="footer">
@@ -22,13 +23,17 @@
 </template>
 
 <script>
-import CardPostComp from '../components/CardPostComp.vue';
-import HeaderComp from '../components/HeaderComp.vue';
+import { mapActions, mapState } from "vuex";
+import CardPostComp from "../components/CardPostComp.vue";
+import HeaderComp from "../components/HeaderComp.vue";
 // @ is an alias to /src
 
 export default {
   name: "Home",
   components: { CardPostComp, HeaderComp },
+  computed: {
+    ...mapState(["dataPost"]),
+  },
 };
 </script>
 
@@ -101,7 +106,7 @@ span {
 
 .profile img {
   height: 40px;
-  border-radius: 50%;
+  border-radius: 20%;
 }
 
 .icon {
@@ -112,9 +117,9 @@ span {
 
 .dashboard {
   background: linear-gradient(-45deg, #ee7752, #e73c7e, #23a6d5, #23d5ab);
-	background-size: 400% 400%;
-	animation: gradient 15s ease infinite;
-	/* height: 100vh; */
+  background-size: 400% 400%;
+  animation: gradient 15s ease infinite;
+  /* height: 100vh; */
   /* background-color: rgb(165, 165, 165); */
   grid-area: dashboard;
   display: flex;
@@ -123,7 +128,6 @@ span {
   flex-direction: column;
   align-items: center;
 }
-
 
 .card-post {
   background-color: white;
@@ -194,9 +198,8 @@ span {
 
 .embed p {
   font-size: small;
-  color:rgb(36, 34, 34);
+  color: rgb(36, 34, 34);
 }
-
 
 .like-comment {
   background-color: white;

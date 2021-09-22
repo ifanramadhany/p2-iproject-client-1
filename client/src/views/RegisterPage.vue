@@ -2,7 +2,7 @@
   <div id="container-register-page">
     <div id="content-register-page">
       <div class="title-app">
-        <router-link to="/">
+        <router-link to="/" style="text-decoration: none">
         <h1>SepotipaiGram</h1>
         </router-link>
         
@@ -43,26 +43,21 @@
           </div>
           <div class="google">
             <button
-              style="margin-right: 4%"
-              type="submit"
-              class="btn btn-primary"
-            >
-              Login
-            </button>
-            <button
-              id="regiter-page-button"
-              style="background-color: gray; margin-right: 30px"
-              class="btn btn-primary"
-              @click="toRegisterPage()"
-            >
-              Register
-            </button>
-            <!-- button google sign in  -->
-            <GoogleLogin
-                  :params="params"
-                  :renderParams="renderParams"
-                  :onSuccess="onSuccess"
-                ></GoogleLogin>
+                style="margin-right: 6%"
+                type="submit"
+                class="btn btn-primary"
+              >
+                Submit
+              </button>
+              <button
+                id="cancel-register"
+                style="background-color: salmon"
+                class="btn btn-primary"
+                @click="toLoginPage()"
+              >
+                Cancel
+              </button>
+            
           </div>
         </form>
       </div>
@@ -72,7 +67,12 @@
 
 <script>
 export default {
-  name: 'RegisterPage'
+  name: 'RegisterPage',
+  methods: {
+    toLoginPage() {
+      this.$router.push("/login")
+    },
+  }
 }
 </script>
 

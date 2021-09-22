@@ -23,9 +23,12 @@
           <div v-if="!dataAddPost" class="artist">Artist</div>
           <div v-if="dataAddPost" class="title">{{ dataAddPost.title }}</div>
           <div v-if="dataAddPost" class="artist">{{ dataAddPost.artist }}</div>
-          <label v-if="dataAddPost" for="exampleFormControlTextarea1">Caption</label>
+          <label v-if="dataAddPost" for="exampleFormControlTextarea1"
+            >Caption</label
+          >
           <div class="embed">
             <textarea
+              v-model="caption"
               v-if="dataAddPost"
               class="form-control"
               id="exampleFormControlTextarea1"
@@ -38,7 +41,7 @@
         <div class="post-add">
           <button
             v-if="dataAddPost"
-            @click="addPostToDb(dataAddPost)"
+            @click="addPostToDbHandler()"
             style="margin-bottom: 3px"
             type="submit"
             class="btn btn-primary"
@@ -109,32 +112,45 @@
 <script>
 import SearchCard from "../components/SearchCard.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
-import HeaderComp from '../components/HeaderComp.vue';
+import HeaderComp from "../components/HeaderComp.vue";
 export default {
   components: { SearchCard, HeaderComp },
   name: "AddPostPage",
   data() {
     return {
       search: "",
+      caption: "",
     };
   },
   computed: {
-    ...mapState(["dataAddPost"]),
+    ...mapState(["dataAddPost", "dataMusic", "addPostFlagger"]),
   },
   methods: {
-    ...mapMutations(["CLEAR_DATA_MUSIC"]),
-    ...mapActions(["getMusic"]),
+    ...mapMutations(["CLEAR_DATA_MUSIC", "POST_FLAGGER_FALSE"]),
+    ...mapActions(["getMusic", "addPostToDb", "fetchPostData"]),
     async searchHandler() {
       console.log(this.search);
       await this.getMusic(this.search);
     },
-    async addPostToDb(data) {
-      console.log(data);
+    async addPostToDbHandler() {
+      const payload = {
+        title: this.dataMusic.title,
+        artist: this.dataMusic.artist,
+        embedUrl: this.dataMusic.embed,
+        caption: this.caption
+      }
+      await this.addPostToDb(payload)
+      if(this.addPostFlagger) {
+        this.$router.push("/")
+        this.POST_FLAGGER_FALSE();
+        this.fetchPostData();
+        swal("add new post successfully", "", "success");
+      }
     },
     clear() {
-      this.CLEAR_DATA_MUSIC()
-      console.log('anjay');
-    }
+      this.CLEAR_DATA_MUSIC();
+      console.log("anjay");
+    },
   },
 };
 </script>

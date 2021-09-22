@@ -6,6 +6,7 @@ import RegisterPage from "../views/RegisterPage.vue";
 import AddPostPage from "../views/AddPostPage.vue";
 import EnjoyMusicPage from "../views/EnjoyMusicPage.vue";
 import CommentPage from "../views/CommentPage.vue";
+import NotFoundPage from "../views/NotFoundPage.vue";
 
 Vue.use(VueRouter);
 
@@ -19,16 +20,37 @@ const routes = [
     path: "/login",
     name: "LoginPage",
     component: LoginPage,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("access_token")) {
+        next({ name: 'Home'})
+      } else {
+        next()
+      }
+    }
   },
   {
     path: "/register",
     name: "RegisterPage",
     component: RegisterPage,
+    beforeEnter: (to, from, next) => {
+      if (localStorage.getItem("access_token")) {
+        next({ name: 'Home'})
+      } else {
+        next()
+      }
+    }
   },
   {
     path: "/add-post",
     name: "AddPostPage",
     component: AddPostPage,
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem("access_token")) {
+        next({ name: 'LoginPage'})
+      } else {
+        next()
+      }
+    }
   },
   {
     path: "/enjoy-music",
@@ -39,6 +61,17 @@ const routes = [
     path: "/comment",
     name: "CommentPage",
     component: CommentPage,
+    beforeEnter: (to, from, next) => {
+      if (!localStorage.getItem("access_token")) {
+        next({ name: 'LoginPage'})
+      } else {
+        next()
+      }
+    }
+  },
+  {
+    path: "*",
+    component: NotFoundPage,
   },
   {
     path: "/about",

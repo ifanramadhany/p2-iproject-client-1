@@ -2,31 +2,38 @@
   <div class="card-post">
         <div class="main-post">
           <div class="album">
-            <iframe title="deezer-widget" src="https://widget.deezer.com/widget/dark/track/1425844092" width="410" height="230" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write"></iframe>
+            <iframe title="deezer-widget" :src="post.embedUrl" width="410" height="230" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write"></iframe>
           </div>
-          <div class="title">STAY</div>
-          <div class="artist">The Kid Laroy</div>
+          <div class="title">{{post.title}}</div>
+          <div class="artist">{{post.artist}}</div>
           <div class="embed">
             <div style="margin-left: 6px;">
               <img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+              :src="post.User.profileUrl"
               alt=""
               width="25px"
               style="border-radius: 5px"
             />
-            <p>amad1</p>
+            <p>{{post.User.username}}</p>
             </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil temporibus ut iure enim doloremque amet?</p>
+            <p>{{post.caption}}</p>
+            <button
+                
+                class="btn btn-secondary"
+                style="margin-right: 6px;"
+              >
+                <i class="fas fa-times"></i>
+              </button>
           </div>
         </div>
 
         <div class="like-comment">
-          <a href="">
+          <a href="" style="text-decoration: none">
             <img
               style="margin-right: 5px"
               src="https://img.icons8.com/ios-filled/40/000000/filled-like.png"
             />
-            <span>125</span>
+            <span>{{post.like}}</span>
           </a>
           <a @click.prevent="toCommentPage()" href="">
             <img
@@ -38,16 +45,24 @@
 </template>
 
 <script>
+import { mapActions, mapState } from "vuex";
 export default {
   name: 'CardPostComp',
   methods: {
     toCommentPage() {
       this.$router.push("/comment")
     }
-  }
+  },
+  props: ['post'],
+  computed: {
+    ...mapState("userData"),
+    
+  },
 }
 </script>
 
-<style>
-
+<style scoped>
+* {
+  text-decoration: none;
+}
 </style>
