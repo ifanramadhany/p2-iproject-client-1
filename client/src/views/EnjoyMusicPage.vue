@@ -21,9 +21,7 @@
           <div class="title">STAY</div>
           <div class="artist">The Kid Laroy</div>
           <label for="exampleFormControlTextarea1">Caption</label>
-          <div class="embed">
-            <div id='rg_embed_link_378195' class='rg_embed_link' data-song-id='378195'>Read <a href='https://genius.com/Sia-chandelier-lyrics'>“Chandelier” by Sia</a> on Genius</div>
-          </div>
+          
         </div>
 
         
@@ -40,6 +38,7 @@
     </div>
   </div>
 </template>
+
 
 <script>
 import HeaderComp from "../components/HeaderComp.vue"

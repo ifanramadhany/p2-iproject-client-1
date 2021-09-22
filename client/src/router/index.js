@@ -5,6 +5,7 @@ import LoginPage from "../views/LoginPage.vue";
 import RegisterPage from "../views/RegisterPage.vue";
 import AddPostPage from "../views/AddPostPage.vue";
 import EnjoyMusicPage from "../views/EnjoyMusicPage.vue";
+import CommentPage from "../views/CommentPage.vue";
 
 Vue.use(VueRouter);
 
@@ -33,6 +34,11 @@ const routes = [
     path: "/enjoy-music",
     name: "EnjoyMusicPage",
     component: EnjoyMusicPage,
+  },
+  {
+    path: "/comment",
+    name: "CommentPage",
+    component: CommentPage,
   },
   {
     path: "/about",
