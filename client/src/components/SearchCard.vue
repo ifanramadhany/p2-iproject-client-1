@@ -1,9 +1,13 @@
 <template>
-  <tr v-if="dataMusic">
-      <td>{{dataMusic.title}}</td>
-      <td>{{dataMusic.artist}}</td>
+  <tr >
+      <td>{{data.title}}</td>
+      <td>{{data.artist.name}}</td>
       <td>
-        <button @click="addToLeft(dataMusic)" type="button" class="btn btn-secondary">
+        <button @click="addToLeft({
+          artist: data.artist.name,
+          title: data.title,
+          embed: `https://widget.deezer.com/widget/dark/track/${data.id}`
+        })" type="button" class="btn btn-secondary">
             <span class="las la-play-circle"></span>
           </button>
       </td>
@@ -19,11 +23,12 @@ export default {
   },
   methods: {
     ...mapMutations(["FILL_DATA_ADD_POST"]),
-    addToLeft(dataMusic) {
-      console.log(dataMusic);
-      this.FILL_DATA_ADD_POST(dataMusic)
+    addToLeft(payload) {
+      // console.log(payload);
+      this.FILL_DATA_ADD_POST(payload)
     }
-  }
+  },
+  props: ["data"]
 
 }
 </script>

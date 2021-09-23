@@ -9,6 +9,7 @@
         v-for="post in dataPost"
         :key="post.id"
         :post="post"
+        
       ></card-post-comp>
     </div>
 

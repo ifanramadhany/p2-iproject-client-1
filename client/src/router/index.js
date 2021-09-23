@@ -58,7 +58,7 @@ const routes = [
     component: EnjoyMusicPage,
   },
   {
-    path: "/comment",
+    path: "/comment/:id",
     name: "CommentPage",
     component: CommentPage,
     beforeEnter: (to, from, next) => {
