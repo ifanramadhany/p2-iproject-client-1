@@ -13,16 +13,13 @@
     </div>
 
     <div class="footer">
-      <img
-        src="https://i.postimg.cc/4xGgG0t1/hacktiv-footer-black.png"
-        alt=""
-        style="height: 60px"
-      />
+      <HFooter></HFooter>
     </div>
   </div>
 </template>
 
 <script>
+import HFooter from "vue-hacktiv8-footer";
 import { mapActions, mapState } from "vuex";
 import CardPostComp from "../components/CardPostComp.vue";
 import HeaderComp from "../components/HeaderComp.vue";
@@ -30,7 +27,7 @@ import HeaderComp from "../components/HeaderComp.vue";
 
 export default {
   name: "Home",
-  components: { CardPostComp, HeaderComp },
+  components: { CardPostComp, HeaderComp, HFooter },
   computed: {
     ...mapState(["dataPost"]),
   },

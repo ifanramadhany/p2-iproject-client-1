@@ -100,21 +100,18 @@
     </div>
 
     <div class="footer">
-      <img
-        src="https://i.postimg.cc/4xGgG0t1/hacktiv-footer-black.png"
-        alt=""
-        style="height: 60px"
-      />
+      <HFooter></HFooter>
     </div>
   </div>
 </template>
 
 <script>
+import HFooter from "vue-hacktiv8-footer";
 import SearchCard from "../components/SearchCard.vue";
 import { mapActions, mapMutations, mapState } from "vuex";
 import HeaderComp from "../components/HeaderComp.vue";
 export default {
-  components: { SearchCard, HeaderComp },
+  components: { SearchCard, HeaderComp, HFooter },
   name: "AddPostPage",
   data() {
     return {

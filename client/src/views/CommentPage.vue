@@ -68,22 +68,19 @@
     </div>
 
     <div class="footer">
-      <img
-        src="https://i.postimg.cc/4xGgG0t1/hacktiv-footer-black.png"
-        alt=""
-        style="height: 60px"
-      />
+      <HFooter></HFooter>
     </div>
   </div>
 </template>
 
 <script>
+import HFooter from "vue-hacktiv8-footer";
 import { mapActions, mapMutations, mapState } from "vuex";
 import CommentLeftComp from '../components/CommentLeftComp.vue'
 import CommentRightComp from '../components/CommentRightComp.vue'
 import HeaderComp from '../components/HeaderComp.vue'
 export default {
-  components: { HeaderComp, CommentRightComp, CommentLeftComp },
+  components: { HeaderComp, CommentRightComp, CommentLeftComp, HFooter },
   name: 'CommentPage',
   data() {
     return {
