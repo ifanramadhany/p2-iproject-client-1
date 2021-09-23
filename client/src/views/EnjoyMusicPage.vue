@@ -30,11 +30,7 @@
     </div>
 
     <div class="footer">
-      <img
-        src="https://i.postimg.cc/4xGgG0t1/hacktiv-footer-black.png"
-        alt=""
-        style="height: 60px"
-      />
+      <HFooter></HFooter>
     </div>
   </div>
 </template>
@@ -42,9 +38,9 @@
 
 <script>
 import HeaderComp from "../components/HeaderComp.vue"
-
+import HFooter from "vue-hacktiv8-footer";
 export default {
-  components: { HeaderComp },
+  components: { HeaderComp, HFooter },
   name: "EnjoyMusicPage",
 };
 </script>
