@@ -13,11 +13,11 @@
           <div class="mb-3">
             <label for="username-login" class="form-label">Username</label>
             <input
-              v-model="email"
+              v-model="username"
               type="text"
               class="form-control"
               id="username-login"
-              aria-describedby="emailHelp"
+              
             />
           </div>
           <div class="mb-3">
@@ -66,13 +66,40 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
   name: 'RegisterPage',
+  data() {
+    return {
+      username: "",
+      email: "",
+      password: ""
+    }
+  },
+  computed: {
+    ...mapState(["registerSuccess"])
+  },
   methods: {
+    ...mapMutations(["REGISTER_DEFAULT"]),
+    ...mapActions(["register"]),
     toLoginPage() {
       this.$router.push("/login")
     },
-  }
+    async registerHandler() {
+      const payload = {
+        username: this.username,
+        email: this.email,
+        password: this.password
+      }
+      await this.register(payload)
+      if(this.registerSuccess) {
+        this.$router.push("/login")
+        swal("register successfully, please login!", "", "success");
+        this.REGISTER_DEFAULT()
+      }
+    }
+  },
+  
 }
 </script>
 

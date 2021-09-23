@@ -12,9 +12,27 @@ export default new Vuex.Store({
     dataAddPost: "",
     dataPost: [],
     userData: {},
-    addPostFlagger: false
+    addPostFlagger: false,
+    changeProfileFlagger: false,
+    registerSuccess: false,
+    comments: []
   },
   mutations: {
+    PUSH_MESSAGE(state, payload) {
+      state.comments.push(payload)
+    },
+    REGISTER_DEFAULT(state) {
+      state.registerSuccess = false
+    },
+    REGISTER_SUCCESS(state) {
+      state.registerSuccess = true
+    },
+    CHANGE_PROFILE_FALSE(state) {
+      state.changeProfileFlagger = false
+    },
+    CHANGE_PROFILE_TRUE(state) {
+      state.changeProfileFlagger = true
+    },
     POST_FLAGGER_FALSE(state) {
       state.addPostFlagger = false
     },
@@ -46,6 +64,57 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async deletePost(context, id) {
+      const access_token = localStorage.getItem("access_token")
+      try {
+        const response = await localHost({
+          method: 'delete',
+          url: `/posts/${id}`,
+          headers: {
+            access_token
+          }
+        })
+        context.dispatch("fetchPostData")
+        swal("Post has been deleted", "", "success");
+      } catch (err) {
+        console.log(err.response.data);
+        swal(`${err.response.data.message[0]}`, "", "info");
+      }
+    },
+    async register(context, payload) {
+      try {
+        const response = await localHost({
+          method: 'post',
+          url: '/users/register',
+          data: payload
+        })
+        // console.log(response.data);
+        context.commit("REGISTER_SUCCESS")
+      } catch (err) {
+        console.log(err.response.data);
+        swal(`${err.response.data.message[0]}`, "", "info");
+      }
+    },
+    async changeProfileImage(context, payload) {
+      const access_token = localStorage.getItem("access_token")
+      const form = new FormData();
+      form.append("profileUrl", payload);
+      
+      try {
+        const response = await localHost({
+          method: 'patch',
+          url: '/users/profile',
+          headers: {
+            access_token
+          },
+          data: form
+        })
+        context.commit("CHANGE_PROFILE_TRUE")
+        context.dispatch("fetchUserData")
+      } catch (err) {
+        console.log(err.response);
+      }
+    },
     async addPostToDb(context, payload) {
       const access_token = localStorage.getItem("access_token")
       try {

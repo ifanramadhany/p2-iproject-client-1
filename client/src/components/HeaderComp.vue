@@ -7,9 +7,10 @@
           alt=""
         />
       </a>
-      <div v-if="profile" style="margin-left: 10px">
-        <input class="custom-file-upload" type="file" />
-        <i @click="CloseChangeProfile()" class="fas fa-times btn-x"></i>
+      <div class="change-profile" v-if="profile" style="margin-left: 10px">
+        <input @change="uploadImage" class="custom-file-upload" type="file" />
+        <i @click="closeChangeProfile()" class="fas fa-times btn-x" style="padding-left: 7px"></i>
+        <i @click="changeProfileHandler()" class="fas fa-check btn-x"> Change</i>
       </div>
       <div v-if="!profile" style="margin-left: 10px">
         <h3 style="font-size: 20px">{{userData.username}}</h3>
@@ -46,10 +47,16 @@ export default {
   data() {
     return {
       profile: false,
+      profileUrl: "",
     };
   },
   methods: {
-    ...mapActions(["logout"]),
+    ...mapMutations(["CHANGE_PROFILE_FALSE"]),
+    ...mapActions(["logout", "changeProfileImage"]),
+    uploadImage(event) {
+      // console.log(event);
+      this.profileUrl = event.target.files[0];
+    },
     async logoutHandler() {
       await this.logout();
       if (!this.isLoggedIn) {
@@ -63,18 +70,28 @@ export default {
     changeProfile() {
       this.profile = true;
     },
-    CloseChangeProfile() {
+    closeChangeProfile() {
       this.profile = false
     },
+    async changeProfileHandler() {
+      await this.changeProfileImage(this.profileUrl)
+      if(this.changeProfileFlagger) {
+        this.$router.push("/")
+        this.CHANGE_PROFILE_FALSE()
+        this.closeChangeProfile()
+        swal("profile image has been updated", "", "success");
+      }
+    }
 
   },
   computed: {
-    ...mapState(["isLoggedIn", "userData"]),
+    ...mapState(["isLoggedIn", "userData", "changeProfileFlagger"]),
   },
 };
 </script>
 
 <style>
+
 .header h1 {
   cursor: pointer;
 }
