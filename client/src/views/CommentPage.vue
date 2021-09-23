@@ -46,47 +46,20 @@
           <h2>Comments</h2>
         </div>
         <div class="comments-comment">
-          <div class="message-right">
-            <h6><img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              alt=""
-              width="25px"
-              style="border-radius: 5px; margin: 2px"
-            />udin1</h6>
-            <h6>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</h6>
-          </div>
-          <div class="message-left">
-            <h6><img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              alt=""
-              width="25px"
-              style="border-radius: 5px; margin: 2px"
-            />amad1</h6>
-            <h6>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</h6>
-          </div>
-          <div class="message-left">
-            <h6><img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              alt=""
-              width="25px"
-              style="border-radius: 5px; margin: 2px"
-            />amad1</h6>
-            <h6>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</h6>
-          </div>
-          <div class="message-right">
-            <h6><img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              alt=""
-              width="25px"
-              style="border-radius: 5px; margin: 2px"
-            />udin1</h6>
-            <h6>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</h6>
-          </div>
+          <!-- comment right  -->
+          <comment-right-comp></comment-right-comp>
+          <comment-right-comp></comment-right-comp>
+          <!-- comment left  -->
+          <comment-left-comp></comment-left-comp>
+          <comment-left-comp></comment-left-comp>
+          
+          
+          
         </div>
         <div class="input-comment">
           <div class="type_msg">
             <div class="input_msg_write">
-              <input type="text" class="write_msg" placeholder="Type a message" />
+              <input v-model="inputComment" type="text" class="write_msg" placeholder="Type a message" />
               <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
             </div>
           </div>
@@ -105,10 +78,18 @@
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from "vuex";
+import CommentLeftComp from '../components/CommentLeftComp.vue'
+import CommentRightComp from '../components/CommentRightComp.vue'
 import HeaderComp from '../components/HeaderComp.vue'
 export default {
-  components: { HeaderComp },
-  name: 'CommentPage'
+  components: { HeaderComp, CommentRightComp, CommentLeftComp },
+  name: 'CommentPage',
+  data() {
+    return {
+      inputComment: ""
+    }
+  }
 }
 </script>
 
