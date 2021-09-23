@@ -5,39 +5,42 @@
 
     <div class="dashboard">
       <!-- card post  -->
-      <div class="card-post">
+      <div v-if="dataPostById !== {}" class="card-post">
         <div class="main-post">
           <div class="album">
-            <iframe title="deezer-widget" src="https://widget.deezer.com/widget/dark/track/1425844092" width="410" height="230" frameborder="0" allowtransparency="true" allow="encrypted-media; clipboard-write"></iframe>
+            <iframe
+              title="deezer-widget"
+              :src="dataPostById.embedUrl"
+              width="410"
+              height="230"
+              frameborder="0"
+              allowtransparency="true"
+              allow="encrypted-media; clipboard-write"
+            ></iframe>
           </div>
-          <div class="title">STAY</div>
-          <div class="artist">The Kid Laroy</div>
+          <div class="title">{{ dataPostById.title }}</div>
+          <div class="artist">{{ dataPostById.artist }}</div>
           <div class="embed">
-            <div style="margin-left: 6px;">
+            <div style="margin-left: 6px">
               <img
-              src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
-              alt=""
-              width="25px"
-              style="border-radius: 5px"
-            />
-            <p>amad1</p>
+                :src="dataPostById.User.profileUrl"
+                alt=""
+                width="25px"
+                style="border-radius: 5px"
+              />
+              <p>{{ dataPostById.User.username }}</p>
             </div>
-            <p>Lorem ipsum dolor sit amet consectetur adipisicing elit. Nihil temporibus ut iure enim doloremque amet?</p>
+            <p>{{ dataPostById.caption }}</p>
           </div>
         </div>
 
         <div class="like-comment">
-          <a href="">
+          <a href="" style="text-decoration: none">
             <img
               style="margin-right: 5px"
               src="https://img.icons8.com/ios-filled/40/000000/filled-like.png"
             />
-            <span>125</span>
-          </a>
-          <a href="">
-            <img
-              src="https://img.icons8.com/material-outlined/40/000000/comments--v1.png"
-            />
+            <span>{{ dataPostById.like }}</span>
           </a>
         </div>
       </div>
@@ -46,21 +49,68 @@
           <h2>Comments</h2>
         </div>
         <div class="comments-comment">
-          <!-- comment right  -->
-          <comment-right-comp></comment-right-comp>
-          <comment-right-comp></comment-right-comp>
-          <!-- comment left  -->
-          <comment-left-comp></comment-left-comp>
-          <comment-left-comp></comment-left-comp>
-          
-          
-          
+          <!-- comment comp -->
+          <div
+            class="comments-child"
+            v-for="(comment, i) in comments"
+            :key="i"
+            :comment="comment"
+          >
+            <div
+              v-if="
+                userData.id === comment.UserId &&
+                comment.PostId === $route.params.id
+              "
+              class="message-right"
+            >
+              <h6 style="font-size: 12px">
+                {{ comment.username }}
+                <img
+                  :src="comment.profileUrl"
+                  alt=""
+                  width="25px"
+                  style="border-radius: 5px; margin: 2px"
+                />
+              </h6>
+              <h6 style="font-family: arial; font-weight: bold">
+                {{ comment.comment }}
+              </h6>
+            </div>
+
+            <div
+              v-if="
+                userData.id !== comment.UserId &&
+                comment.PostId === $route.params.id
+              "
+              class="message-left"
+            >
+              <h6 style="font-size: 12px">
+                <img
+                  :src="comment.profileUrl"
+                  alt=""
+                  width="25px"
+                  style="border-radius: 5px; margin: 2px"
+                />{{ comment.username }}
+              </h6>
+              <h6 style="font-family: arial; font-weight: bold">
+                {{ comment.comment }}
+              </h6>
+            </div>
+          </div>
         </div>
         <div class="input-comment">
           <div class="type_msg">
             <div class="input_msg_write">
-              <input v-model="inputComment" type="text" class="write_msg" placeholder="Type a message" />
-              <button class="msg_send_btn" type="button"><i class="fa fa-paper-plane-o" aria-hidden="true"></i></button>
+              <input
+                @keyup.enter="sendComment()"
+                v-model="inputComment"
+                type="text"
+                class="write_msg"
+                placeholder="Type a message"
+              />
+              <button @click="sendComment()" class="msg_send_btn" type="button">
+                <i class="fa fa-paper-plane-o" aria-hidden="true"></i>
+              </button>
             </div>
           </div>
         </div>
@@ -76,18 +126,50 @@
 <script>
 import HFooter from "vue-hacktiv8-footer";
 import { mapActions, mapMutations, mapState } from "vuex";
-import CommentLeftComp from '../components/CommentLeftComp.vue'
-import CommentRightComp from '../components/CommentRightComp.vue'
-import HeaderComp from '../components/HeaderComp.vue'
+import CommentLeftComp from "../components/CommentLeftComp.vue";
+import CommentRightComp from "../components/CommentRightComp.vue";
+import HeaderComp from "../components/HeaderComp.vue";
 export default {
   components: { HeaderComp, CommentRightComp, CommentLeftComp, HFooter },
-  name: 'CommentPage',
+  name: "CommentPage",
   data() {
     return {
-      inputComment: ""
-    }
-  }
-}
+      inputComment: "",
+    };
+  },
+  sockets: {
+    broadcastMessage(data) {
+      // console.log(data, 'di client');
+      this.FILL_DATA_COMMENTS(data);
+    },
+  },
+  computed: {
+    ...mapState(["dataPostById", "userData", "comments"]),
+  },
+  updated() {
+    this.scrollToEnd();
+  },
+  methods: {
+    ...mapMutations(["FILL_DATA_COMMENTS"]),
+    scrollToEnd() {
+      const container = document.querySelector(".comments-comment");
+      const scrollHeight = container.scrollHeight;
+      container.scrollTop = scrollHeight;
+    },
+    sendComment() {
+      console.log(this.inputComment);
+      const data = {
+        comment: this.inputComment,
+        UserId: this.userData.id,
+        PostId: this.$route.params.id,
+        username: this.userData.username,
+        profileUrl: this.userData.profileUrl,
+      };
+      this.$socket.emit("sendMessage", data);
+      this.inputComment = "";
+    },
+  },
+};
 </script>
 
 <style scoped>
@@ -192,29 +274,31 @@ span {
 }
 
 .card-post-2 {
-  background-color: white;
+  background-color: whitesmoke;
   width: 500px;
   height: 450px;
   border-radius: 10px;
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   display: grid;
   grid-template-rows: 1fr 8fr 1.6fr;
-  grid-template-areas: 
-    'title'
-    'comments'
-    'input'
-  ;
+  grid-template-areas:
+    "title"
+    "comments"
+    "input";
 }
 
-.title-comment{
+.title-comment {
   /* background-color: green; */
   grid-area: title;
 }
 
-.comments-comment{
+.comments-comment {
   background-color: gray;
   grid-area: comments;
   overflow-y: scroll;
+}
+
+.comments-child {
   display: flex;
   align-items: flex-end;
   flex-direction: column;
@@ -226,8 +310,8 @@ span {
   background-color: white;
   margin: 15px;
   padding: 2px 10px;
-  max-width:75%;
-  display:inline-block;
+  max-width: 75%;
+  display: inline-block;
 }
 
 .message-left {
@@ -237,16 +321,15 @@ span {
   margin: 15px;
   padding: 2px 10px;
   text-align: left;
-  max-width:75%;
-  display:inline-block;
+  max-width: 75%;
+  display: inline-block;
 }
 
-.input-comment{
+.input-comment {
   background-color: rgb(189, 189, 189);
   grid-area: input;
   border-radius: 0 0 10px 10px;
 }
-
 
 .search {
   padding: 10px;
@@ -336,7 +419,10 @@ span {
   margin: 10px;
 }
 
-.type_msg {border-top: 1px solid #c4c4c4;position: relative;}
+.type_msg {
+  border-top: 1px solid #c4c4c4;
+  position: relative;
+}
 .msg_send_btn {
   background: #05728f none repeat scroll 0 0;
   border: medium none;
@@ -350,7 +436,9 @@ span {
   top: 17px;
   width: 33px;
 }
-.messaging { padding: 0 0 50px 0;}
+.messaging {
+  padding: 0 0 50px 0;
+}
 .msg_history {
   height: 516px;
   overflow-y: auto;

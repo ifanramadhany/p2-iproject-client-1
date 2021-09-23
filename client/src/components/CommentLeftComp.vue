@@ -1,20 +1,24 @@
 <template>
-  <div class="message-left">
-    <h6>
+  <div v-if="userData.id !== comment.UserId" class="message-left">
+    <h6 style="font-size: 12px;">
       <img
-        src="https://cdn.pixabay.com/photo/2015/10/05/22/37/blank-profile-picture-973460_1280.png"
+        :src="comment.profileUrl"
         alt=""
         width="25px"
         style="border-radius: 5px; margin: 2px"
-      />amad1
+      />{{comment.username}}
     </h6>
-    <h6>Lorem ipsum dolor, sit amet consectetur adipisicing elit.</h6>
+    <h6 style="font-family: arial; font-weight: bold;">{{comment.comment}}</h6>
   </div>
 </template>
 
 <script>
+import { mapActions, mapMutations, mapState } from "vuex";
 export default {
-  name: 'CommentLeftComp'
+  name: 'CommentLeftComp',
+  computed: {
+    ...mapState(["userData"])
+  }
 };
 </script>
 
