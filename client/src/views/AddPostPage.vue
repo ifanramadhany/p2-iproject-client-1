@@ -73,6 +73,14 @@
               <i class="fas fa-search"></i>
             </button>
           </div>
+          <button
+            @click="clear()"
+            style="margin-bottom: 3px"
+            type="submit"
+            class="btn btn-secondary"
+          >
+            Clear
+          </button>
           <table class="table">
             <thead>
               <tr>
@@ -83,18 +91,10 @@
             </thead>
             <tbody>
               <!-- searc card  -->
-              <search-card></search-card>
+              <search-card v-for="(data ,i) in dataMusic" :key="i" :data="data"></search-card>
             </tbody>
           </table>
-          <button
-            v-if="dataAddPost"
-            @click="clear()"
-            style="margin-bottom: 3px"
-            type="submit"
-            class="btn btn-secondary"
-          >
-            Clear
-          </button>
+          
         </div>
       </div>
     </div>
@@ -126,14 +126,14 @@ export default {
     ...mapMutations(["CLEAR_DATA_MUSIC", "POST_FLAGGER_FALSE"]),
     ...mapActions(["getMusic", "addPostToDb", "fetchPostData"]),
     async searchHandler() {
-      console.log(this.search);
+      // console.log(this.search);
       await this.getMusic(this.search);
     },
     async addPostToDbHandler() {
       const payload = {
-        title: this.dataMusic.title,
-        artist: this.dataMusic.artist,
-        embedUrl: this.dataMusic.embed,
+        title: this.dataAddPost.title,
+        artist: this.dataAddPost.artist,
+        embedUrl: this.dataAddPost.embed,
         caption: this.caption
       }
       await this.addPostToDb(payload)
@@ -141,12 +141,13 @@ export default {
         this.$router.push("/")
         this.POST_FLAGGER_FALSE();
         this.fetchPostData();
+        this.CLEAR_DATA_MUSIC();
         swal("add new post successfully", "", "success");
       }
     },
     clear() {
       this.CLEAR_DATA_MUSIC();
-      console.log("anjay");
+      
     },
   },
 };
@@ -261,6 +262,7 @@ span {
   box-shadow: 0 4px 8px 0 rgba(0, 0, 0, 0.2), 0 6px 20px 0 rgba(0, 0, 0, 0.19);
   display: flex;
   flex-direction: column;
+  overflow-y: scroll
 }
 
 .search {

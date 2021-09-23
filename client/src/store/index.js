@@ -8,16 +8,27 @@ Vue.use(Vuex);
 export default new Vuex.Store({
   state: {
     isLoggedIn: false,
-    dataMusic: "",
+    dataMusic: [],
     dataAddPost: "",
     dataPost: [],
     userData: {},
     addPostFlagger: false,
     changeProfileFlagger: false,
     registerSuccess: false,
-    comments: []
+    comments: [],
+    dataPostById: {},
+    comments: [],
   },
   mutations: {
+    FILL_DATA_COMMENTS(state, payload) {
+      state.comments.push(payload)
+    },
+    FILL_DATA_POST_BY_ID(state, payload) {
+      state.dataPostById = payload
+    },
+    EMPTY_USER_DATA(state) {
+      state.userData === {}
+    },
     PUSH_MESSAGE(state, payload) {
       state.comments.push(payload)
     },
@@ -64,6 +75,22 @@ export default new Vuex.Store({
     }
   },
   actions: {
+    async getPostDataById(context, id) {
+      const access_token = localStorage.getItem("access_token")
+      try {
+        const response = await localHost({
+          method: 'get',
+          url: `/posts/${id}`,
+          headers: {
+            access_token
+          }
+        })
+        context.commit("FILL_DATA_POST_BY_ID", response.data)
+      } catch (err) {
+        console.log(err.response.data);
+        swal(`${err.response.data.message[0]}`, "", "info");
+      }
+    },
     async deletePost(context, id) {
       const access_token = localStorage.getItem("access_token")
       try {
@@ -116,6 +143,7 @@ export default new Vuex.Store({
       }
     },
     async addPostToDb(context, payload) {
+      
       const access_token = localStorage.getItem("access_token")
       try {
         const response = await localHost({
@@ -158,6 +186,8 @@ export default new Vuex.Store({
         console.log("User signed out.");
       });
       context.commit("LOGOUT")
+      context.commit("EMPTY_USER_DATA")
+      context.dispatch("fetchPostData")
     },
     async fetchUserData(context) {
       const access_token = localStorage.getItem("access_token")
@@ -220,13 +250,13 @@ export default new Vuex.Store({
             "d2bc998eeemsh938640842b8b649p1505b9jsna840a9397f50",
         },
       });
-      console.log(response.data.data[0]);
-      const data = {
-        embed: `https://widget.deezer.com/widget/dark/track/${response.data.data[0].id}`,
-        title: response.data.data[0].title,
-        artist: response.data.data[0].artist.name,
-      }
-      context.commit("FILL_DATA_MUSIC", data)
+      // console.log(response.data.data);
+      // const data = {
+      //   embed: `https://widget.deezer.com/widget/dark/track/${response.data.data[0].id}`,
+      //   title: response.data.data[0].title,
+      //   artist: response.data.data[0].artist.name,
+      // }
+      context.commit("FILL_DATA_MUSIC", response.data.data)
     },
   },
   modules: {},
